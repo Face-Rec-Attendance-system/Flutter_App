@@ -98,7 +98,7 @@ class _MyFormPageState extends State<MyFormPage> {
       List<int> imageBytes = await file.readAsBytes();
 
       // Build the multipart request
-      final String url = 'http://192.168.1.207:8000/api/upload_image'; // Replace with your server's endpoint
+      final String url = 'http://192.168.0.108:8000/api/upload_image/'; // Replace with your server's endpoint
       var request = http.MultipartRequest('POST', Uri.parse(url));
 
       // Attach the image file as a multipart file
