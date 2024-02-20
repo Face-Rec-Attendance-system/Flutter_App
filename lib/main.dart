@@ -19,7 +19,8 @@ class MainApp extends StatelessWidget {
       routes:{
         "/":(context) => LoginPage(),
         MyRoutes.HomeRoute:(context) => HomePage(),
-        MyRoutes.LoginRoute: (context) => LoginPage()
+        MyRoutes.LoginRoute: (context) => LoginPage(),
+        
       }
     );
   }

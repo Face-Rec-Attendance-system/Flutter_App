@@ -38,17 +38,29 @@ class _MyFormPageState extends State<MyFormPage> {
     'Sem 6': ['Sem 6 Subject 1', 'Sem 6 Subject 2', 'Sem 6 Subject 3', 'Sem 6 Subject 4', 'Sem 6 Subject 5'],
   };
 
-  final ImagePicker _imagePicker = ImagePicker();
-  List<XFile>? _imageList;
+ final ImagePicker _imagePicker = ImagePicker();
+  List<XFile> _imageList = []; // Initialize as an empty list
 
   Future<void> _openCamera() async {
-    final XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      setState(() {
-        _imageList = [image];
-      });
+    List<XFile> images = []; // Change to non-nullable XFile list
+    int maxImages = 3; // Maximum number of images to select
+
+    for (int i = 0; i < maxImages; i++) {
+      XFile? image = await _imagePicker.pickImage(source: ImageSource.camera);
+
+      if (image != null) {
+        images.add(image);
+      } else {
+        break; // Exit loop if no image is selected
+      }
     }
+
+    setState(() {
+      _imageList = images; // Update state with the selected images
+    });
   }
+
+
 
   Future<void> _openGallery() async {
     final List<XFile>? images = await _imagePicker.pickMultiImage();
@@ -98,7 +110,7 @@ class _MyFormPageState extends State<MyFormPage> {
       List<int> imageBytes = await file.readAsBytes();
 
       // Build the multipart request
-      final String url = 'http://192.168.0.108:8000/api/upload_image/'; // Replace with your server's endpoint
+      final String url = 'http://100.112.247.145:8000/api/upload_image/'; // Replace with your server's endpoint
       var request = http.MultipartRequest('POST', Uri.parse(url));
 
       // Attach the image file as a multipart file
@@ -124,9 +136,8 @@ class _MyFormPageState extends State<MyFormPage> {
 
     // Clear the selected images after successful submission
     setState(() {
-      _imageList = null;
-    });
-
+  _imageList = []; // Assign an empty list to clear the selected images
+});
     // Hide loading screen
     setState(() {
       _isLoading = false;
